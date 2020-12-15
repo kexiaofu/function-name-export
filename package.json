@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "https://github.com/kexiaofu/function-name-export.git",
   "author": "liangjf <liangjf@yingmi.cn>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.12.10"
+  }
 }
