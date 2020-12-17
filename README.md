@@ -7,5 +7,6 @@
 - [ ] 支持 Tsx
 - [ ] 支持 Vue
 
-#### TODO
-- [ ] 抽离 visitor
+#### 优化
+- [x] 抽离 visitor
+- [x] 采用 event 采集 AST 识别后结果

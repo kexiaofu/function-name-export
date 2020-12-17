@@ -3,7 +3,7 @@ const { HANDLE_FUNCTION } = require('../utils/eventHandleEnum')
 
 // var fn = function() {};
 // var fn = () => {};
-function fromVariableDeclarator() {
+function VariableDeclaratorPlugin() {
   return {
     visitor: {
       VariableDeclarator(path) {
@@ -48,4 +48,4 @@ function fromVariableDeclarator() {
   }
 }
 
-module.exports = fromVariableDeclarator;
+module.exports = VariableDeclaratorPlugin;

@@ -2,19 +2,32 @@ const {transform} = require('@babel/core');
 const eventEmitter = require('./utils/event');
 const { HANDLE_FUNCTION } = require('./utils/eventHandleEnum');
 
-const fromFunctionDeclaration = require('./visitors/FunctionDeclaration');
-const fromVariableDeclarator = require('./visitors/VariableDeclarator');
-const fromExpressionStatement = require('./visitors/ExpressionStatement');
-const fromClassDeclaration = require('./visitors/ClassDeclaration');
+const {
+  FunctionDeclarationPlugin,
+  FunctionDeclarationHandler
+} = require('./visitors/FunctionDeclaration');
+const VariableDeclaratorPlugin = require('./visitors/VariableDeclarator');
+const ExpressionStatementPlugin = require('./visitors/ExpressionStatement');
+const ClassDeclarationPlugin = require('./visitors/ClassDeclaration');
 
 let result = [];
 
-function getFunctionName(code, options) {
+function getFunctionName(code, options={}) {
   result = [];
   eventEmitter.on(HANDLE_FUNCTION, (e) => {
     result.push(e);
   })
-  let { isJsx = false, isTs = false, filename } = options;
+  let defaultOptions = {
+    isJsx: false,
+    isTs: false,
+    filename: ''
+  };
+  let {
+    isJsx = false, isTs = false, filename
+  } = {
+    ...defaultOptions,
+    ...options
+  };
   
   // 设置 filename 默认值 
   if ((isJsx || isTs) && !filename) {
@@ -27,16 +40,16 @@ function getFunctionName(code, options) {
         {
           allowDeclareFields: true
         }
-      ] : undefined,
-      isJsx ? ["@babel/preset-react"] : undefined
+      ] : undefined
     ].filter(Boolean),
     filename,
     plugins: [
       ['@babel/plugin-proposal-class-properties'],
-      [fromVariableDeclarator],
-      [fromFunctionDeclaration],
-      [fromExpressionStatement],
-      [fromClassDeclaration]
+      ['@babel/plugin-syntax-jsx'],
+      [VariableDeclaratorPlugin],
+      [FunctionDeclarationPlugin],
+      [ExpressionStatementPlugin],
+      [ClassDeclarationPlugin]
     ]
   })
 
@@ -57,5 +70,77 @@ function getFunctionName(code, options) {
   console.log(result);
   return result;
 }
+
+// getFunctionName(`
+// function HelloWorld() {
+//   return (<div>hello world</div>);
+// };
+
+// class HelloWorldComponent extends Component {
+
+//   handleEvent = function() {};
+
+//   handleOther = () => {};
+
+//   somethingFn() {};
+
+//   render() {
+//     return <div onClick={handleEvent}>hello HelloWorldComponent</div>
+//   }
+// }
+
+// const outFn = function withNameFn() {}
+
+// const fn = function() {};
+
+// const fnArrow = () => {};
+
+// let a = {};
+
+// a.b = () => {};
+
+// a.c = function withNameFnForA() {};
+
+// function test() {
+//   function inner() {}
+// }
+// `, {isJsx: true, isTs: true})
+eventEmitter.on(HANDLE_FUNCTION, (e) => {
+  console.log(e);
+})
+const c = require("@babel/parser").parse(`
+  function testParser() {
+    function innerParser() {}
+  }
+  function HelloWorld() {
+    return (<div>hello world</div>);
+  }
+`, {
+  // parse in strict mode and allow module declarations
+  sourceType: "module",
+
+  plugins: [
+    // enable jsx and flow syntax
+    "jsx",
+    "flow",
+    [FunctionDeclarationPlugin],
+  ]
+});
+
+const d = transform(`
+  function test() {
+    function inner() {}
+  }
+`, {
+  // parse in strict mode and allow module declarations
+  sourceType: "module",
+
+  plugins: [
+    [FunctionDeclarationPlugin],
+  ]
+});
+
+console.log(FunctionDeclarationHandler(c));
+
 
 module.exports = getFunctionName;

@@ -3,7 +3,7 @@ const { HANDLE_FUNCTION } = require('../utils/eventHandleEnum')
 const { handleClassFunction } = require('../utils/utils');
 
 // class
-function fromClassDeclaration() {
+function ClassDeclarationPlugin() {
   return {
     visitor: {
       ClassDeclaration(path) {
@@ -48,6 +48,23 @@ function fromClassDeclaration() {
                 })
               },
             })
+          },
+          ClassMethod(path) {
+            try {
+              let name = path.node.key.name, line = -1;
+              if (path.node.loc) {
+                line = path.node.loc.start.line;
+                eventEmitter.emit(HANDLE_FUNCTION, {
+                  type: 'ClassDeclaration',
+                  subType: 'ClassMethod',
+                  parentName,
+                  name: name || parentName,
+                  line
+                });
+              }
+            } catch {
+              console.log('ClassDeclaration ClassMethod failed');
+            }
           }
         })
       }
@@ -55,4 +72,4 @@ function fromClassDeclaration() {
   }
 }
 
-module.exports = fromClassDeclaration;
+module.exports = ClassDeclarationPlugin;

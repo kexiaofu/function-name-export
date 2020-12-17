@@ -5,7 +5,7 @@ const { HANDLE_FUNCTION } = require('../utils/eventHandleEnum')
 // a.b = function hello() {};
 // ;(function (arg) {})(arg)
 // 如果 (function (arg) {})(arg) 前无分割，则识别不出来
-function fromExpressionStatement() {
+function ExpressionStatementPlugin() {
   return {
     visitor: {
       ExpressionStatement(path) {
@@ -47,4 +47,4 @@ function fromExpressionStatement() {
   }
 }
 
-module.exports = fromExpressionStatement;
+module.exports = ExpressionStatementPlugin;
