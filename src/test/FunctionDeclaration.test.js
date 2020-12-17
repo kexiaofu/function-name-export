@@ -1,34 +1,35 @@
-const { transform } = require('@babel/core');
-const eventEmitter = require('../utils/event');
-const { HANDLE_FUNCTION } = require('../utils/eventHandleEnum');
-const FunctionDeclarationPlugin = require('../visitors/FunctionDeclaration');
+const getFunctionAggregation = require('../parser/parse');
 
 const code = `
-function testFn() {}
+function testFn() {
+  function inner() {
+    function hello() {}
+  }
+}
 `;
 
 const codeResult = [
   {
     type: 'FunctionDeclaration',
-    subType: '',
-    parentName: '',
     name: 'testFn',
     line: 2
+  },
+  {
+    type: 'FunctionDeclaration',
+    name: 'inner',
+    line: 3
+  },
+  {
+    type: 'FunctionDeclaration',
+    name: 'hello',
+    line: 4
   }
 ];
 
 test('test export function in FunctionDeclaration', () => {
   let result = [];
 
-  eventEmitter.on(HANDLE_FUNCTION, (e) => {
-    result.push(e);
-  })
-
-  transform(code, {
-    plugins: [
-      [FunctionDeclarationPlugin]
-    ]
-  })
+  result = getFunctionAggregation(code);
 
   expect(result).toEqual(codeResult);
 })

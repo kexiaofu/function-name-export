@@ -41,4 +41,18 @@ function getFunctionAggregation(code) {
   return result;
 }
 
+getFunctionAggregation(`
+var fn = function() {
+  var inner = function() {};
+
+  const arrowFn = () => {};
+};
+
+var fnArrow = () => {
+  var arrowInner = function() {};
+
+  let arrowFnA = function() {};
+};
+`)
+
 module.exports = getFunctionAggregation;

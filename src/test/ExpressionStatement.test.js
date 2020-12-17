@@ -1,7 +1,4 @@
-const { transform } = require('@babel/core');
-const eventEmitter = require('../utils/event');
-const { HANDLE_FUNCTION } = require('../utils/eventHandleEnum');
-const ExpressionStatementPlugin = require('../visitors/ExpressionStatement');
+const getFunctionAggregation = require('../parser/parse');
 
 const code = `
 a.b = function hello() {};
@@ -14,15 +11,11 @@ a.b = function hello() {};
 const codeResult = [
   {
     type: 'ExpressionStatement',
-    subType: 'FunctionExpression',
-    parentName: '',
     name: 'hello',
     line: 2
   },
   {
     type: 'ExpressionStatement',
-    subType: 'FunctionExpression',
-    parentName: '',
     name: 'innerFn',
     line: 6
   }
@@ -31,15 +24,7 @@ const codeResult = [
 test('test export function in expression', () => {
   let result = [];
 
-  eventEmitter.on(HANDLE_FUNCTION, (e) => {
-    result.push(e);
-  })
-
-  transform(code, {
-    plugins: [
-      [ExpressionStatementPlugin]
-    ]
-  })
+  result = getFunctionAggregation(code);
 
   expect(result).toEqual(codeResult);
 })

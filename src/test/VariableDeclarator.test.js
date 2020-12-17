@@ -1,43 +1,56 @@
-const { transform } = require('@babel/core');
-const eventEmitter = require('../utils/event');
-const { HANDLE_FUNCTION } = require('../utils/eventHandleEnum');
-const VariableDeclaratorPlugin = require('../visitors/VariableDeclarator');
+const getFunctionAggregation = require('../parser/parse');
 
 const code = `
-var fn = function() {};
+var fn = function() {
+  var inner = function() {};
 
-var fnArrow = () => {};
+  const arrowFn = () => {};
+};
+
+var fnArrow = () => {
+  var arrowInner = function() {};
+
+  let arrowFnA = function() {};
+};
 `;
 
 const codeResult = [
   {
-    type: 'VariableDeclarator',
-    subType: '',
+    type: 'VariableDeclaration',
     name: 'fn',
-    parentName: '',
     line: 2
   },
   {
-    type: 'VariableDeclarator',
-    subType: 'ArrowFunctionExpression',
+    type: 'VariableDeclaration',
+    name: 'inner',
+    line: 3
+  },
+  {
+    type: 'VariableDeclaration',
+    name: 'arrowFn',
+    line: 5
+  },
+  {
+    type: 'VariableDeclaration',
     name: 'fnArrow',
-    parentName: '',
-    line: 4
+    line: 8
+  },
+  {
+    type: 'VariableDeclaration',
+    name: 'arrowInner',
+    line: 9
+  },
+  {
+    type: 'VariableDeclaration',
+    name: 'arrowFnA',
+    line: 11
   }
 ];
 
 test('test export function by VariableDeclarator', () => {
   let result = [];
 
-  eventEmitter.on(HANDLE_FUNCTION, (e) => {
-    result.push(e);
-  })
-
-  transform(code, {
-    plugins: [
-      [VariableDeclaratorPlugin]
-    ]
-  })
+  result = getFunctionAggregation(code);
 
   expect(result).toEqual(codeResult);
 })

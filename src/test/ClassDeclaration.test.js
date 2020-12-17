@@ -1,7 +1,4 @@
-const { transform } = require('@babel/core');
-const eventEmitter = require('../utils/event');
-const { HANDLE_FUNCTION } = require('../utils/eventHandleEnum');
-const ClassDeclarationPlugin = require('../visitors/ClassDeclaration');
+const getFunctionAggregation = require('../parser/parse');
 
 const code = `
   class A extends B {
@@ -15,39 +12,28 @@ const code = `
   }
 `;
 
-const codeResult = [
-  {
+const codeResult = [{
     type: 'ClassDeclaration',
-    subType: '',
-    parentName: 'A',
     name: 'A',
     line: 2
   },
   {
-    type: 'ClassDeclaration',
-    subType: 'ArrowFunctionExpression',
-    parentName: 'A',
+    type: 'ClassProperty',
     name: 'testB',
     line: 3
   },
   {
-    type: 'ClassDeclaration',
-    subType: 'FunctionExpression',
-    parentName: 'A',
+    type: 'ClassProperty',
     name: 'testC',
     line: 5
   },
   {
-    type: 'ClassDeclaration',
-    subType: 'FunctionExpression',
-    parentName: 'A',
+    type: 'ClassProperty',
     name: 'testD',
     line: 7
   },
   {
-    type: 'ClassDeclaration',
-    subType: 'ClassMethod',
-    parentName: 'A',
+    type: 'ClassMethod',
     name: 'testE',
     line: 9
   }
@@ -56,16 +42,7 @@ const codeResult = [
 test('test export function in class', () => {
   let result = [];
 
-  eventEmitter.on(HANDLE_FUNCTION, (e) => {
-    result.push(e);
-  })
-
-  transform(code, {
-    plugins: [
-      ['@babel/plugin-proposal-class-properties'],
-      [ClassDeclarationPlugin]
-    ]
-  })
+  result = getFunctionAggregation(code)
 
   expect(result).toEqual(codeResult);
 })
