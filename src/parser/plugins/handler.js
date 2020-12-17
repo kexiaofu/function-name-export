@@ -20,7 +20,7 @@ function handler(path, noCheckType=true) {
   if (noCheckType || handleFunctionKey.indexOf(path.node.type) > -1) {
     const node = path.node || path;
     if (JSON.stringify(node).indexOf('BlockStatement') > -1) {
-      console.log(node.type, JSON.stringify(node).length)
+      // console.log(node.type, JSON.stringify(node).length)
       const fn = handleFunction[node.type];
       if (fn) fn(path);
     }

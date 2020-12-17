@@ -14,7 +14,7 @@ function ClassMethodHandler(path) {
       name: getName(path.node.key),
       line: getLine(path.node)
     };
-    console.log(result);
+    // console.log(result);
     eventEmitter.emit(HANDLE_FUNCTION, result);
     return result;
 

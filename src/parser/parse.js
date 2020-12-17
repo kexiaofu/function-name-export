@@ -12,6 +12,7 @@ function getFunctionAggregation(code) {
     sourceType: 'module',
     plugins: [
       "jsx",
+      "typescript",
       "classProperties"
     ]
   });
@@ -37,22 +38,8 @@ function getFunctionAggregation(code) {
   // sort by line asc
   result.sort((a, b) => a.line - b.line)
 
-  console.log(result);
+  // console.log(result);
   return result;
 }
-
-getFunctionAggregation(`
-var fn = function() {
-  var inner = function() {};
-
-  const arrowFn = () => {};
-};
-
-var fnArrow = () => {
-  var arrowInner = function() {};
-
-  let arrowFnA = function() {};
-};
-`)
 
 module.exports = getFunctionAggregation;

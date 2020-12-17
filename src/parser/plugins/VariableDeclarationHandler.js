@@ -50,8 +50,8 @@ function VariableDeclarationHandler(path, repeat = false) {
       }
 
       eventEmitter.emit(HANDLE_FUNCTION, result);
-      
-      console.log(result);
+
+      // console.log(result);
       return result;
     }
     

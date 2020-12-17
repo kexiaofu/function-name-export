@@ -12,7 +12,7 @@ function FunctionDeclarationHandler (path) {
       name: getName(path.node.id),
       line: getLine(path.node.id)
     };
-    console.log(result);
+    // console.log(result);
     eventEmitter.emit(HANDLE_FUNCTION, result);
     return result;
   } catch {

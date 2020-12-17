@@ -38,7 +38,7 @@ function ExpressionStatementHandler(path) {
 
         eventEmitter.emit(HANDLE_FUNCTION, result);
 
-        console.log(result);
+        // console.log(result);
         return result
       }
     } else {
@@ -58,7 +58,7 @@ function ExpressionStatementHandler(path) {
 
           eventEmitter.emit(HANDLE_FUNCTION, result);
 
-          console.log(result);
+          // console.log(result);
           return result
         }
       }
