@@ -39,6 +39,11 @@ function VariableDeclarationHandler(path, repeat = false) {
 
         const BlockStatementBody = initNode.body.body || [];
         
+        // var example = function fn() {
+        //   function inner() {}
+        // }
+        // fn 方法内的 inner 方法不会被 FunctionDeclaration 捕获到
+        // 因此在此进行 handle 处理，即进行全目标检测
         const handler = require('./handler');
 
         // 这里会导致块级作用域内的方法先返回
@@ -46,7 +51,6 @@ function VariableDeclarationHandler(path, repeat = false) {
         BlockStatementBody.forEach(item => {
           handler(item);
         })
-
       }
 
       eventEmitter.emit(HANDLE_FUNCTION, result);

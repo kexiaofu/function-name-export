@@ -12,12 +12,14 @@ const codeResult = [
   {
     type: 'ExpressionStatement',
     name: 'hello',
-    line: 2
+    line: 2,
+    status: false
   },
   {
     type: 'ExpressionStatement',
     name: 'innerFn',
-    line: 6
+    line: 6,
+    status: false
   }
 ];
 

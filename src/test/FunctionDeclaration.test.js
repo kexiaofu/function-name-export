@@ -12,17 +12,20 @@ const codeResult = [
   {
     type: 'FunctionDeclaration',
     name: 'testFn',
-    line: 2
+    line: 2,
+    status: false
   },
   {
     type: 'FunctionDeclaration',
     name: 'inner',
-    line: 3
+    line: 3,
+    status: false
   },
   {
     type: 'FunctionDeclaration',
     name: 'hello',
-    line: 4
+    line: 4,
+    status: false
   }
 ];
 

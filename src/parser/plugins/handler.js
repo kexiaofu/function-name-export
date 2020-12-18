@@ -16,7 +16,9 @@ const handleFunction = {
 
 const handleFunctionKey = Object.keys(handleFunction);
 
+// 该方法只用于检测函数，非函数的节点将不会执行 handleFunction 里的方法
 function handler(path, noCheckType=true) {
+  // 当在 BlockStatementBody 内执行方法时，将不会检测节点是否是目标集合之一
   if (noCheckType || handleFunctionKey.indexOf(path.node.type) > -1) {
     const node = path.node || path;
     if (JSON.stringify(node).indexOf('BlockStatement') > -1) {

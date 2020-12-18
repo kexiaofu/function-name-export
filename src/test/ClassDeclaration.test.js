@@ -15,27 +15,32 @@ const code = `
 const codeResult = [{
     type: 'ClassDeclaration',
     name: 'A',
-    line: 2
+    line: 2,
+    status: false
   },
   {
     type: 'ClassProperty',
     name: 'testB',
-    line: 3
+    line: 3,
+    status: false
   },
   {
     type: 'ClassProperty',
     name: 'testC',
-    line: 5
+    line: 5,
+    status: false
   },
   {
     type: 'ClassProperty',
     name: 'testD',
-    line: 7
+    line: 7,
+    status: false
   },
   {
     type: 'ClassMethod',
     name: 'testE',
-    line: 9
+    line: 9,
+    status: false
   }
 ];
 

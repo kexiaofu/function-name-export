@@ -1,4 +1,3 @@
-
 const {
   getLine,
   getName,
@@ -6,11 +5,13 @@ const {
 } = require('../../utils/utils');
 const eventEmitter = require('../../utils/event');
 const {
-  HANDLE_FUNCTION
+  HANDLE_FUNCTION,
+  FUNCTION_CALL
 } = require('../../utils/eventHandleEnum');
 
 function ExpressionStatementHandler(path) {
   const node = path.node || path;
+  console.log(node);
   try {
     const rightNode = (node.expression && node.expression.right);
 
@@ -43,10 +44,12 @@ function ExpressionStatementHandler(path) {
       }
     } else {
       // TODO CallExpression 以后可能会抽出来
+      // handle situation like that:
+      // (function innerFn(arg) {})(arg);
       const expressionNode = node.expression;
+      console.log(expressionNode);
       if (expressionNode.type === 'CallExpression') {
         const callee = expressionNode.callee;
-
         if (callee.id) {
           const name = getName(callee.id);
 

@@ -18,32 +18,38 @@ const codeResult = [
   {
     type: 'VariableDeclaration',
     name: 'fn',
-    line: 2
+    line: 2,
+    status: false
   },
   {
     type: 'VariableDeclaration',
     name: 'inner',
-    line: 3
+    line: 3,
+    status: false
   },
   {
     type: 'VariableDeclaration',
     name: 'arrowFn',
-    line: 5
+    line: 5,
+    status: false
   },
   {
     type: 'VariableDeclaration',
     name: 'fnArrow',
-    line: 8
+    line: 8,
+    status: false
   },
   {
     type: 'VariableDeclaration',
     name: 'arrowInner',
-    line: 9
+    line: 9,
+    status: false
   },
   {
     type: 'VariableDeclaration',
     name: 'arrowFnA',
-    line: 11
+    line: 11,
+    status: false
   }
 ];
 
