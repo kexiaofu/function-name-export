@@ -25,7 +25,7 @@ const isHadKeyWord = function(str, key) {
 }
 
 const isHadFunctionString = function(str) {
-  return str ? isHadKeyWord(str, 'function') : false;
+  return str ? isHadKeyWord(str, 'functionexpression') : false;
 }
 
 module.exports = {

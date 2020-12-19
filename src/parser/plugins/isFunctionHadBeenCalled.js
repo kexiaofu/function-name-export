@@ -32,7 +32,8 @@ function isFunctionHadBeenCalled(path) {
       setResult(node.callee, result);
     }
 
-    // 2. for jsx: onClick={a.bind(this, 1)}
+    // 2. for jsx: onClick={a.bind(this, 1)} 
+    //    for: this.hello()
     // onClick={a.bind(this, fn)} fn 函数作为参数暂时检测不了
     // a.b() 暂不支持
     // 因为一般 a = {b: fn} b 暂时检测不了是函数
@@ -41,7 +42,14 @@ function isFunctionHadBeenCalled(path) {
       node.callee &&
       node.callee.type === 'MemberExpression'
     ) {
-      setResult(node.callee.object, result);
+      const object = node.callee.object;
+      // a.bind(null, args)
+      if (object.type === 'Identifier') {
+        setResult(object, result);
+      } else if (object.type === 'ThisExpression') {
+        // this.hello()
+        setResult(node.callee.property, result);
+      }
     }
 
     // 3. for jsx: onClick={a}

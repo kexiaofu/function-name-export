@@ -1,6 +1,7 @@
 const {
   getLine,
-  getName
+  getName,
+  isHadFunctionString
 } = require('../../utils/utils');
 const eventEmitter = require('../../utils/event');
 const {
@@ -8,15 +9,21 @@ const {
 } = require('../../utils/eventHandleEnum');
 
 function ClassPropertyHandler(path) {
+  const node = path.node || path;
   try {
-    const result = {
-      type: 'ClassProperty',
-      name: getName(path.node.key),
-      line: getLine(path.node)
-    };
-    // console.log(result);
-    eventEmitter.emit(HANDLE_FUNCTION, result);
-    
+    // class A {
+    //   hello = function() {}
+    //   other = () => {}
+    // }
+    if (isHadFunctionString(node.value.type)) {
+      const result = {
+        type: 'ClassProperty',
+        name: getName(path.node.key),
+        line: getLine(path.node)
+      };
+      // console.log(result);
+      eventEmitter.emit(HANDLE_FUNCTION, result);
+    }
   } catch (error) {
     console.log('ClassPropertyHandler catch error:');
     console.log(error);
