@@ -16,10 +16,10 @@ function ClassDeclarationHandler(path) {
     };
     // console.log(result);
     eventEmitter.emit(HANDLE_FUNCTION, result);
-    return result;
 
-  } catch {
-    console.log('ClassDeclarationHandler catch error');
+  } catch (error) {
+    console.log('ClassDeclarationHandler catch error:');
+    console.log(error);
   }
 }
 

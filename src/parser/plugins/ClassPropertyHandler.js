@@ -16,10 +16,10 @@ function ClassPropertyHandler(path) {
     };
     // console.log(result);
     eventEmitter.emit(HANDLE_FUNCTION, result);
-    return result;
-
-  } catch {
-    console.log('ClassPropertyHandler catch error');
+    
+  } catch (error) {
+    console.log('ClassPropertyHandler catch error:');
+    console.log(error);
   }
 }
 

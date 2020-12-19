@@ -4,7 +4,6 @@ const eventEmitter = require('../utils/event');
 const { HANDLE_FUNCTION, FUNCTION_CALL } = require('../utils/eventHandleEnum');
 const { isArray } = require('../utils/utils');
 const handler = require('./plugins/handler');
-const isFunctionHadBeenCalled = require('./plugins/isFunctionHadBeenCalled');
 
 function getFunctionAggregation(code) {
 
@@ -20,6 +19,7 @@ function getFunctionAggregation(code) {
 
   let result = [];
   let functionCallResult = [];
+  let functionNameCallResult = [];
 
   // get the result what traverse AST handle
   eventEmitter.on(HANDLE_FUNCTION, (msg) => {
@@ -39,26 +39,30 @@ function getFunctionAggregation(code) {
   traverse(AST, {
     enter(path) {
       // get function info
-      handler(path, false);
-      // check function had been called or not
-      isFunctionHadBeenCalled(path);
+      handler(path);
     }
   })
 
   // sort by line asc
   result.sort((a, b) => a.line - b.line);
 
+  // get function name in functionCallResult
+  functionNameCallResult = functionCallResult.map(item => item.name);
+
   // If the state is true then it's being called
   // otherwise it is never called
   result = result.map(item => {
-    item.status = true;
-    if (functionCallResult.indexOf(item.name) === -1) {
-      item.status = false;
+    item.status = false;
+    if (functionNameCallResult.indexOf(item.name) > -1) {
+      item.status = true;
+      // gather the callee info
+      item.calledAggregation = functionCallResult.filter(f => f.name === item.name);
     }
     return item;
   })
 
-  console.log(result);
+  // console.log(result);
+  // console.log(functionCallResult);
   return result;
 }
 

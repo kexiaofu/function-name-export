@@ -5,13 +5,11 @@ const {
 } = require('../../utils/utils');
 const eventEmitter = require('../../utils/event');
 const {
-  HANDLE_FUNCTION,
-  FUNCTION_CALL
+  HANDLE_FUNCTION
 } = require('../../utils/eventHandleEnum');
 
 function ExpressionStatementHandler(path) {
   const node = path.node || path;
-  console.log(node);
   try {
     const rightNode = (node.expression && node.expression.right);
 
@@ -40,14 +38,12 @@ function ExpressionStatementHandler(path) {
         eventEmitter.emit(HANDLE_FUNCTION, result);
 
         // console.log(result);
-        return result
       }
     } else {
       // TODO CallExpression 以后可能会抽出来
       // handle situation like that:
       // (function innerFn(arg) {})(arg);
       const expressionNode = node.expression;
-      console.log(expressionNode);
       if (expressionNode.type === 'CallExpression') {
         const callee = expressionNode.callee;
         if (callee.id) {
@@ -62,15 +58,13 @@ function ExpressionStatementHandler(path) {
           eventEmitter.emit(HANDLE_FUNCTION, result);
 
           // console.log(result);
-          return result
         }
       }
     }
 
-    return null;
-  } catch (e) {
-    console.log('ExpressionStatementHandler catch error', e)
-    return null;
+  } catch (error) {
+    console.log('ExpressionStatementHandler catch error:');
+    console.log(error);
   }
 }
 

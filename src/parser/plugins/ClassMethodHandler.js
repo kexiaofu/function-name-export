@@ -16,10 +16,10 @@ function ClassMethodHandler(path) {
     };
     // console.log(result);
     eventEmitter.emit(HANDLE_FUNCTION, result);
-    return result;
 
-  } catch {
-    console.log('ClassMethodHandler catch error');
+  } catch (error) {
+    console.log('ClassMethodHandler catch error:');
+    console.log(error);
   }
 }
 
