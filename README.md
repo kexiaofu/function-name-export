@@ -1,3 +1,13 @@
+### 使用方式
+```javascript 
+const getFunctionAggregation = require('function-name-export');
+
+const content = 'const fn = () => {}';
+
+let result = getFunctionAggregation(content);
+
+```
+
 ### 支持的函数声明
 ```javascript
   // fn
