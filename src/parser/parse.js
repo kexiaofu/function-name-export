@@ -36,6 +36,7 @@ function getFunctionAggregation(code) {
   })
 
   // traverse AST to get function expression
+  // traverse遍历时，节点对应的方法不能更改 path （不能自主循环调用对应的方法处理），否则会中断traverse对AST的遍历
   traverse(AST, {
     enter(path) {
       // get function info
