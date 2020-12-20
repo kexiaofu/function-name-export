@@ -7,14 +7,18 @@ const ClassPropertyHandler = require('./ClassPropertyHandler');
 const isFunctionHadBeenCalled = require('./isFunctionHadBeenCalled')
 
 const handleFunction = {
-  'VariableDeclarator': VariableDeclarationHandler,
+  'VariableDeclarator': [VariableDeclarationHandler],
   'ExpressionStatement': ExpressionStatementHandler,
   'FunctionDeclaration': FunctionDeclarationHandler,
   'ClassDeclaration': ClassDeclarationHandler,
   'ClassMethod': ClassMethodHandler,
   'ClassProperty': ClassPropertyHandler,
+  // 检测函数是否调用过
   'JSXExpressionContainer': isFunctionHadBeenCalled,
-  'CallExpression': isFunctionHadBeenCalled
+  'CallExpression': isFunctionHadBeenCalled,
+  'ReturnStatement': isFunctionHadBeenCalled,
+  'ObjectExpression': isFunctionHadBeenCalled,
+  'ArrayExpression': isFunctionHadBeenCalled
 }
 
 module.exports = handleFunction;
